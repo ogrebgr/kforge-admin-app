@@ -1,0 +1,14 @@
+<resources>
+    <string name="dlg__generic_wait__label">Please wait…</string>
+
+    <string name="act__main__title">KForge Admin</string>
+
+    <string name="act__login__et_username_hint">Username</string>
+    <string name="act__login__et_password_hint">Password</string>
+    <string name="act__login__btn_login">Login</string>
+    <string name="act__login__title">Login</string>
+    <string name="act__login__error_username_empty">Please enter your username</string>
+    <string name="act__login__error_pasword_empty">Please enter your password</string>
+
+    <string name="main_menu__admin_users">Admin users</string>
+</resources>
