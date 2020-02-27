@@ -10,7 +10,13 @@ import com.bolyartech.forge.base.exchange.forge.ForgeExchangeHelper
 import com.bolyartech.forge.base.rc_task.AbstractRcTask
 import com.bolyartech.forge.base.rc_task.RcTask
 import com.bolyartech.forge.base.rc_task.RcTaskResult
+import com.bolyartech.forge.base.session.Session
 import com.bolyartech.scram_sasl.client.ScramClientFunctionality
+import com.google.gson.Gson
+import com.google.gson.JsonParseException
+import com.google.gson.annotations.SerializedName
+import org.example.kforgepro.modules.admin.data.SessionInfoAdmin
+import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 interface LoginTask : RcTask<RcTaskResult<String, Int>> {
@@ -22,9 +28,12 @@ class LoginTaskImpl @Inject constructor(
     private val forgeExchangeHelper: ForgeExchangeHelper,
     private val sessionForgeExchangeExecutor: SessionForgeExchangeExecutor,
     private val scramClientFunctionality: ScramClientFunctionality,
-    private val loginPrefs: LoginPrefs
+    private val loginPrefs: LoginPrefs,
+    private val session: Session
 ) :
     LoginTask, AbstractRcTask<RcTaskResult<String, Int>>(TaskIds.LOGIN1_TASK) {
+
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 
     private val LOGIN_ENDPOINT = "login"
     private val PARAM_STEP = "step"
@@ -32,6 +41,8 @@ class LoginTaskImpl @Inject constructor(
 
     private lateinit var username: String
     private lateinit var password: String
+
+    private val gson: Gson = Gson()
 
 
     override fun init(username: String, password: String) {
@@ -65,6 +76,15 @@ class LoginTaskImpl @Inject constructor(
         b2.addPostParameter(PARAM_DATA, scramClientFunctionality.prepareFinalMessage(password, success.payload))
         when (val outcome2 = sessionForgeExchangeExecutor.execute(b2.build())) {
             is ForgeExchangeOutcomeOk -> {
+                val rok: RokLogin = try {
+                    gson.fromJson<RokLogin>(outcome2.payload, RokLogin::class.java)
+                } catch (e: JsonParseException) {
+                    logger.error("Cannot parse JSON")
+                    setTaskResult(RcTaskResult.createErrorResult(-1))
+                    return
+                }
+
+                session.startSession(rok.sessionTtl)
                 loginPrefs.storeLoginCredentials(username, password)
                 setTaskResult(RcTaskResult.createSuccessResult(null))
             }
@@ -72,6 +92,12 @@ class LoginTaskImpl @Inject constructor(
             else -> setTaskResult(RcTaskResult.createErrorResult(-1))
         }
     }
+
+    data class RokLogin(
+        @SerializedName("session_ttl") val sessionTtl: Int,
+        @SerializedName("session_info") val sessionInfo: SessionInfoAdmin,
+        @SerializedName("final_message") val finalMessage: String
+    )
 }
 
 
