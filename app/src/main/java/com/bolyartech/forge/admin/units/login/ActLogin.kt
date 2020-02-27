@@ -52,6 +52,8 @@ class ActLogin : PerformsLogin, RctUnitActivity<ResLogin>() {
         val autologin = intent.getIntExtra(PARAM_AUTOLOGIN, -1)
         if (autologin != -1) {
             res.login(loginPrefs.getUsername()!!, loginPrefs.getPassword()!!)
+        } else {
+            topContainer.visibility = View.VISIBLE
         }
     }
 
@@ -64,6 +66,8 @@ class ActLogin : PerformsLogin, RctUnitActivity<ResLogin>() {
 
         if (res.currentTask.isSuccess) {
             setResult(Activity.RESULT_OK)
+        } else {
+            topContainer.visibility = View.VISIBLE
         }
         finish()
     }
