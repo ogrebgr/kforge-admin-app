@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import com.bolyartech.forge.admin.R
 import com.bolyartech.forge.admin.base.SessionActivity
 import com.bolyartech.forge.admin.misc.LoginPrefs
+import com.bolyartech.forge.admin.units.admin_users.ActAdminUsers
 import com.bolyartech.forge.admin.units.login.ActLogin
 import kotlinx.android.synthetic.main.act__main__content.*
 import org.slf4j.LoggerFactory
@@ -33,7 +34,8 @@ class ActMain : SessionActivity() {
 
 
         btnAdminUsers.setOnClickListener {
-            //TODO
+            val intent = Intent(this, ActAdminUsers::class.java)
+            startActivity(intent)
         }
     }
 

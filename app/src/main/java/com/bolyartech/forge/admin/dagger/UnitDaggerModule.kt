@@ -1,5 +1,7 @@
 package com.bolyartech.forge.admin.dagger
 
+import com.bolyartech.forge.admin.units.admin_users.ResAdminUsers
+import com.bolyartech.forge.admin.units.admin_users.ResAdminUsersImpl
 import com.bolyartech.forge.admin.units.login.ResLogin
 import com.bolyartech.forge.admin.units.login.ResLoginImpl
 import com.bolyartech.forge.android.app_unit.UnitManager
@@ -28,4 +30,7 @@ abstract class UnitDaggerModule {
 
     @Binds
     internal abstract fun provideResLogin(impl: ResLoginImpl): ResLogin
+
+    @Binds
+    internal abstract fun provideResAdminUsers(impl: ResAdminUsersImpl): ResAdminUsers
 }

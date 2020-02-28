@@ -22,7 +22,7 @@ abstract class SessionRctUnitActivity<T> : RctUnitActivity<T>()
         }
     }
 
-    private fun goHome() {
+    protected fun goHome() {
         val intent = Intent(this, ActMain::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)

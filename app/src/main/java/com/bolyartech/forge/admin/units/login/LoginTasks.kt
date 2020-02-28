@@ -31,7 +31,7 @@ class LoginTaskImpl @Inject constructor(
     private val loginPrefs: LoginPrefs,
     private val session: Session
 ) :
-    LoginTask, AbstractRcTask<RcTaskResult<String, Int>>(TaskIds.LOGIN1_TASK) {
+    LoginTask, AbstractRcTask<RcTaskResult<String, Int>>(TaskIds.LOGIN_TASK) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 

@@ -19,3 +19,12 @@ fun hideGenericWaitDialog(fm: FragmentManager) {
         fm.executePendingTransactions()
     }
 }
+
+
+fun showSessionExpiredDialog(fm: FragmentManager) {
+    if (fm.findFragmentByTag(DfSessionExpired.DIALOG_TAG) == null) {
+        val fra = DfSessionExpired()
+        fra.show(fm, DfSessionExpired.DIALOG_TAG)
+        fm.executePendingTransactions()
+    }
+}

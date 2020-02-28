@@ -12,12 +12,11 @@ import com.bolyartech.forge.admin.dialogs.showGenericWaitDialog
 import com.bolyartech.forge.admin.misc.LoginPrefs
 import kotlinx.android.synthetic.main.act__login__content.*
 import javax.inject.Inject
-import javax.inject.Provider
 
 class ActLogin : PerformsLogin, RctUnitActivity<ResLogin>() {
 
     @Inject
-    internal lateinit var resProvider: Provider<ResLogin>
+    internal lateinit var resLazy: dagger.Lazy<ResLogin>
 
     @Inject
     internal lateinit var loginPrefs: LoginPrefs
@@ -37,7 +36,7 @@ class ActLogin : PerformsLogin, RctUnitActivity<ResLogin>() {
             }
 
             if (etPassword.text.toString().isEmpty()) {
-                etPassword.error = getString(R.string.act__login__error_pasword_empty)
+                etPassword.error = getString(R.string.act__login__error_password_empty)
             }
 
             if (etUsername.text.toString().isNotEmpty() && etPassword.text.toString().isNotEmpty()) {
@@ -58,7 +57,7 @@ class ActLogin : PerformsLogin, RctUnitActivity<ResLogin>() {
     }
 
     override fun createResidentComponent(): ResLogin {
-        return resProvider.get()
+        return resLazy.get()
     }
 
     override fun handleResidentEndedState() {

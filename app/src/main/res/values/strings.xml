@@ -1,4 +1,14 @@
 <resources>
+    <string name="global_btn_ok">OK</string>
+    <string name="global_btn_yes">Yes</string>
+    <string name="global_btn_cancel">Cancel</string>
+    <string name="global_btn_save">Save</string>
+    <string name="global_btn_new">New</string>
+    <string name="global_btn_edit">Edit</string>
+    <string name="global_btn_del">Delete</string>
+    <string name="global_btn_refresh">Refresh</string>
+    <string name="global_btn_close">Close</string>
+
     <string name="dlg__generic_wait__label">Please wait…</string>
 
     <string name="act__main__title">KForge Admin</string>
@@ -8,7 +18,10 @@
     <string name="act__login__btn_login">Login</string>
     <string name="act__login__title">Login</string>
     <string name="act__login__error_username_empty">Please enter your username</string>
-    <string name="act__login__error_pasword_empty">Please enter your password</string>
+    <string name="act__login__error_password_empty">Please enter your password</string>
 
     <string name="main_menu__admin_users">Admin users</string>
+
+    <string name="act__admin_users__title">Admin users</string>
+    <string name="dlg__session_expired__msg">You were logged out due to inactivity</string>
 </resources>
