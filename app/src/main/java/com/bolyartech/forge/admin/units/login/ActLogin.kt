@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.FragmentManager
 import com.bolyartech.forge.admin.R
 import com.bolyartech.forge.admin.base.PerformsLogin
 import com.bolyartech.forge.admin.base.RctUnitActivity
@@ -11,6 +12,7 @@ import com.bolyartech.forge.admin.dialogs.hideGenericWaitDialog
 import com.bolyartech.forge.admin.dialogs.showGenericWaitDialog
 import com.bolyartech.forge.admin.misc.LoginPrefs
 import kotlinx.android.synthetic.main.act__login__content.*
+import org.example.kforgepro.modules.admin.AdminResponseCodes
 import javax.inject.Inject
 
 class ActLogin : PerformsLogin, RctUnitActivity<ResLogin>() {
@@ -50,6 +52,8 @@ class ActLogin : PerformsLogin, RctUnitActivity<ResLogin>() {
 
         val autologin = intent.getIntExtra(PARAM_AUTOLOGIN, -1)
         if (autologin != -1) {
+            etUsername.setText(loginPrefs.getUsername())
+            etPassword.setText(loginPrefs.getPassword())
             res.login(loginPrefs.getUsername()!!, loginPrefs.getPassword()!!)
         } else {
             topContainer.visibility = View.VISIBLE
@@ -67,8 +71,16 @@ class ActLogin : PerformsLogin, RctUnitActivity<ResLogin>() {
             setResult(Activity.RESULT_OK)
         } else {
             topContainer.visibility = View.VISIBLE
+
+            when (res.getErrorCode()) {
+                AdminResponseCodes.INVALID_LOGIN.getCode() -> {
+                    showInvalidLoginDialog(supportFragmentManager)
+                }
+                else -> {
+                    showCommErrorDialog(supportFragmentManager)
+                }
+            }
         }
-        finish()
     }
 
     override fun handleResidentBusyState() {
@@ -79,8 +91,23 @@ class ActLogin : PerformsLogin, RctUnitActivity<ResLogin>() {
         hideGenericWaitDialog(supportFragmentManager)
     }
 
-
     companion object {
         const val PARAM_AUTOLOGIN = "autologin"
+    }
+
+    private fun showInvalidLoginDialog(fm: FragmentManager) {
+        if (fm.findFragmentByTag(DfInvalidLogin.DIALOG_TAG) == null) {
+            val fra = DfInvalidLogin()
+            fra.show(fm, DfInvalidLogin.DIALOG_TAG)
+            fm.executePendingTransactions()
+        }
+    }
+
+    private fun showCommErrorDialog(fm: FragmentManager) {
+        if (fm.findFragmentByTag(DfCommError.DIALOG_TAG) == null) {
+            val fra = DfCommError()
+            fra.show(fm, DfCommError.DIALOG_TAG)
+            fm.executePendingTransactions()
+        }
     }
 }

@@ -24,4 +24,7 @@
 
     <string name="act__admin_users__title">Admin users</string>
     <string name="dlg__session_expired__msg">You were logged out due to inactivity</string>
+    <string name="dlg__invalid_login_msg">Unable to login you with the provided username and password. Please check if you entered them correctly.</string>
+    <string name="dlg__comm_error_msg">There is a problem communicating with the server. Please try again later.</string>
+
 </resources>

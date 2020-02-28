@@ -9,6 +9,7 @@ import javax.inject.Provider
 
 interface ResLogin : RctResidentComponent {
     fun login(username: String, password: String)
+    fun getErrorCode(): Int
 }
 
 
@@ -19,6 +20,7 @@ class ResLoginImpl @Inject constructor(
 
     private var loginTask: LoginTask? = null
 
+    private var errorCode: Int = 0
 
     override fun login(username: String, password: String) {
         if (isIdle) {
@@ -31,8 +33,14 @@ class ResLoginImpl @Inject constructor(
         }
     }
 
+    override fun getErrorCode(): Int {
+        return errorCode
+    }
+
 
     override fun onTaskPostExecute(endedTask: RcTaskToExecutor) {
-        // empty
+        if (endedTask.isFailure) {
+            errorCode = loginTask!!.result.errorValue
+        }
     }
 }
