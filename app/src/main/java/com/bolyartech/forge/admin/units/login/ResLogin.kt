@@ -37,7 +37,6 @@ class ResLoginImpl @Inject constructor(
         return errorCode
     }
 
-
     override fun onTaskPostExecute(endedTask: RcTaskToExecutor) {
         if (endedTask.isFailure) {
             errorCode = loginTask!!.result.errorValue
