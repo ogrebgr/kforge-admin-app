@@ -1,6 +1,8 @@
 package com.bolyartech.forge.admin.units.admin_users
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -73,5 +75,22 @@ class ActAdminUsers : SessionRctUnitActivity<ResAdminUsers>(), DfSessionExpired.
 
     override fun onDfSessionExpiredClosed() {
         goHome()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.act__admin_users_menu, menu)
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.ab_refresh -> {
+                res.listAdminUsers()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 }

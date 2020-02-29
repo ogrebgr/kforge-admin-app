@@ -69,6 +69,7 @@ class ActLogin : PerformsLogin, RctUnitActivity<ResLogin>() {
 
         if (res.currentTask.isSuccess) {
             setResult(Activity.RESULT_OK)
+            finish()
         } else {
             topContainer.visibility = View.VISIBLE
 
