@@ -1,7 +1,7 @@
-package com.bolyartech.forge.admin.units.admin_users
+package com.bolyartech.forge.admin.units.admin_user_manage
 
 import com.bolyartech.forge.admin.data.AdminUserExportedView
-import com.bolyartech.forge.admin.misc.TaskIds
+import com.bolyartech.forge.admin.misc.TaskIds.Companion.LOAD_ADMIN_USER_TASK
 import com.bolyartech.forge.base.exchange.ForgeExchangeOutcomeErrorCode
 import com.bolyartech.forge.base.exchange.ForgeExchangeOutcomeOk
 import com.bolyartech.forge.base.exchange.SessionForgeExchangeExecutor
@@ -10,47 +10,53 @@ import com.bolyartech.forge.base.rc_task.AbstractRcTask
 import com.bolyartech.forge.base.rc_task.RcTask
 import com.bolyartech.forge.base.rc_task.RcTaskResult
 import com.google.gson.Gson
-import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
-import com.google.gson.reflect.TypeToken
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
-interface ListAdminUsersTask : RcTask<RcTaskResult<List<AdminUserExportedView>, Int>>
+interface LoadAdminUserTask : RcTask<RcTaskResult<AdminUserExportedView, Int>> {
+    fun init(userId: Int)
+}
 
-class ListAdminUsersTaskImpl @Inject constructor(
+
+class LoadAdminUserTaskImpl @Inject constructor(
     private val forgeExchangeHelper: ForgeExchangeHelper,
     private val sessionForgeExchangeExecutor: SessionForgeExchangeExecutor
-) : ListAdminUsersTask, AbstractRcTask<RcTaskResult<List<AdminUserExportedView>, Int>>(TaskIds.ADMIN_USERS_LIST) {
+) : LoadAdminUserTask,
+    AbstractRcTask<RcTaskResult<AdminUserExportedView, Int>>(LOAD_ADMIN_USER_TASK) {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
+    private val ENDPOINT_LOAD = "user"
+    private val PARAM_ID = "id"
 
-    private val ENDPOINT = "user_list"
+    private var userId: Int = 0
 
     private val gson = Gson()
 
+    override fun init(userId: Int) {
+        this.userId = userId
+    }
+
     override fun execute() {
-        val b = forgeExchangeHelper.createForgeGetHttpExchangeBuilder(ENDPOINT)
+        if (userId == 0) {
+            throw IllegalStateException("Did you forgot to call init()")
+        }
+
+        val b = forgeExchangeHelper.createForgeGetHttpExchangeBuilder(ENDPOINT_LOAD)
+        b.addGetParameter(PARAM_ID, userId.toString())
 
         when (val outcome = sessionForgeExchangeExecutor.execute(b.build())) {
             is ForgeExchangeOutcomeOk -> {
-                val users: List<AdminUserExportedView> = try {
-                    gson.fromJson<List<AdminUserExportedView>>(
-                        outcome.payload,
-                        object : TypeToken<List<AdminUserExportedView>>() {}.type
-                    )
-                } catch (e: JsonParseException) {
-                    logger.error("Cannot parse JSON")
-                    setTaskResult(RcTaskResult.createErrorResult(-1))
-                    return
+                val user = try {
+                    gson.fromJson(outcome.payload, AdminUserExportedView::class.java)
                 } catch (e: JsonSyntaxException) {
                     logger.error("Cannot parse JSON")
                     setTaskResult(RcTaskResult.createErrorResult(-1))
                     return
                 }
 
-                setTaskResult(RcTaskResult.createSuccessResult(users))
+                setTaskResult(RcTaskResult.createSuccessResult(user))
             }
 
             is ForgeExchangeOutcomeErrorCode -> {
@@ -61,5 +67,7 @@ class ListAdminUsersTaskImpl @Inject constructor(
                 setTaskResult(RcTaskResult.createErrorResult(-1))
             }
         }
+
     }
 }
+

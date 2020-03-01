@@ -9,18 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bolyartech.forge.admin.R
 import com.bolyartech.forge.admin.data.AdminUserExportedView
 
-class AdminUsersAdapter(private val adminUsers: List<AdminUserExportedView>) :
+class AdminUsersAdapter(private val adminUsers: List<AdminUserExportedView>, private val listener: ClickListener) :
     RecyclerView.Adapter<AdminUsersAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         internal val tvUsername = view.findViewById<TextView>(R.id.tvUsername)
         internal val tvName = view.findViewById<TextView>(R.id.tvName)
         internal val ivStar = view.findViewById<ImageView>(R.id.ivStar)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.rvr__admin_users, parent, false)
-
         return ViewHolder(view)
     }
 
@@ -31,6 +31,9 @@ class AdminUsersAdapter(private val adminUsers: List<AdminUserExportedView>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = adminUsers.get(position)
 
+        holder.view.setOnClickListener {
+            listener.onItemClick(adminUsers[position])
+        }
         holder.tvUsername.text = item.username
         holder.tvName.text = item.name
         if (item.isSuperUser) {
@@ -40,4 +43,8 @@ class AdminUsersAdapter(private val adminUsers: List<AdminUserExportedView>) :
         }
     }
 
+
+    interface ClickListener {
+        fun onItemClick(item: AdminUserExportedView)
+    }
 }

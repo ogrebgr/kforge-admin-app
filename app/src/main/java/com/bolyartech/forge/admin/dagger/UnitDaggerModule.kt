@@ -1,5 +1,7 @@
 package com.bolyartech.forge.admin.dagger
 
+import com.bolyartech.forge.admin.units.admin_user_manage.ResAdminUserManage
+import com.bolyartech.forge.admin.units.admin_user_manage.ResAdminUserManageImpl
 import com.bolyartech.forge.admin.units.admin_users.ResAdminUsers
 import com.bolyartech.forge.admin.units.admin_users.ResAdminUsersImpl
 import com.bolyartech.forge.admin.units.login.ResLogin
@@ -27,10 +29,12 @@ abstract class UnitDaggerModule {
     @Binds
     internal abstract fun provideRunOnUiThreadHelper(impl: RunOnUiThreadHelperDefault): RunOnUiThreadHelper
 
-
     @Binds
     internal abstract fun provideResLogin(impl: ResLoginImpl): ResLogin
 
     @Binds
     internal abstract fun provideResAdminUsers(impl: ResAdminUsersImpl): ResAdminUsers
+
+    @Binds
+    internal abstract fun provideResAdminUserManage(impl: ResAdminUserManageImpl): ResAdminUserManage
 }

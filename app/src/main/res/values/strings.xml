@@ -27,5 +27,12 @@
     <string name="dlg__invalid_login_msg">Unable to login you with the provided username and password. Please check if you entered them correctly.</string>
     <string name="dlg__comm_error_msg">There is a problem communicating with the server. Please try again later.</string>
     <string name="global_mi_refresh">Refresh</string>
+    <string name="act__admin_user_manage__title">Manage admin user</string>
+    <string name="act__admin_user_manage__tv_username">Username</string>
+    <string name="act__admin_user_manage__tv_name">Name</string>
+    <string name="act__admin_user_manage__tv_disabled">Disabled</string>
+    <string name="act__admin_user_manage__tv_superadmin">Superadmin</string>
+    <string name="act__admin_user_manage__mi_disable">Toggle disable user</string>
+    <string name="act__admin_user_manage__mi_superadmin">Toggle super admin</string>
 
 </resources>

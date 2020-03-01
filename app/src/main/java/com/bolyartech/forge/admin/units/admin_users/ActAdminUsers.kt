@@ -1,5 +1,6 @@
 package com.bolyartech.forge.admin.units.admin_users
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,24 +10,31 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bolyartech.forge.admin.R
 import com.bolyartech.forge.admin.base.SessionRctUnitActivity
+import com.bolyartech.forge.admin.data.AdminUserExportedView
 import com.bolyartech.forge.admin.dialogs.DfSessionExpired
 import com.bolyartech.forge.admin.dialogs.hideGenericWaitDialog
 import com.bolyartech.forge.admin.dialogs.showGenericWaitDialog
 import com.bolyartech.forge.admin.dialogs.showSessionExpiredDialog
+import com.bolyartech.forge.admin.units.admin_user_manage.ActAdminUserManage
+import com.bolyartech.forge.android.misc.ActivityResult
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.act__admin_users__content.*
 import org.example.kforgepro.modules.admin.AdminResponseCodes
 import javax.inject.Inject
 
 
-class ActAdminUsers : SessionRctUnitActivity<ResAdminUsers>(), DfSessionExpired.Listener {
+class ActAdminUsers : SessionRctUnitActivity<ResAdminUsers>(), DfSessionExpired.Listener,
+    AdminUsersAdapter.ClickListener {
+    private val ACT_ADMIN_USER_MANAGE = 100
+
     @Inject
     internal lateinit var resResAdminUsers: dagger.Lazy<ResAdminUsers>
 
 
-    private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
+    private val gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         getDependencyInjector().inject(this)
@@ -51,10 +59,11 @@ class ActAdminUsers : SessionRctUnitActivity<ResAdminUsers>(), DfSessionExpired.
         hideGenericWaitDialog(supportFragmentManager)
 
         if (res.currentTask.isSuccess) {
-            viewAdapter = AdminUsersAdapter(res.getAdminUsers())
+            viewAdapter = AdminUsersAdapter(res.getAdminUsers(), this)
             rvAdminUsers.adapter = viewAdapter
         } else {
             if (res.getErrorCode() == AdminResponseCodes.NOT_LOGGED_IN.getCode()) {
+                session.logout()
                 showSessionExpiredDialog(supportFragmentManager)
             }
         }
@@ -85,12 +94,24 @@ class ActAdminUsers : SessionRctUnitActivity<ResAdminUsers>(), DfSessionExpired.
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.ab_refresh -> {
                 res.listAdminUsers()
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onItemClick(item: AdminUserExportedView) {
+        val intent = Intent(this, ActAdminUserManage::class.java)
+        intent.putExtra(ActAdminUserManage.PARAM_USER, gson.toJson(item))
+        startActivityForResult(intent, ACT_ADMIN_USER_MANAGE)
+    }
+
+
+    override fun handleActivityResult(activityResult: ActivityResult) {
+        super.handleActivityResult(activityResult)
+        res.listAdminUsers()
     }
 }

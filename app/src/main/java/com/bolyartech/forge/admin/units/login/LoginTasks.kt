@@ -13,7 +13,7 @@ import com.bolyartech.forge.base.rc_task.RcTaskResult
 import com.bolyartech.forge.base.session.Session
 import com.bolyartech.scram_sasl.client.ScramClientFunctionality
 import com.google.gson.Gson
-import com.google.gson.JsonParseException
+import com.google.gson.JsonSyntaxException
 import com.google.gson.annotations.SerializedName
 import org.example.kforgepro.modules.admin.data.SessionInfoAdmin
 import org.slf4j.LoggerFactory
@@ -78,7 +78,7 @@ class LoginTaskImpl @Inject constructor(
             is ForgeExchangeOutcomeOk -> {
                 val rok: RokLogin = try {
                     gson.fromJson<RokLogin>(outcome2.payload, RokLogin::class.java)
-                } catch (e: JsonParseException) {
+                } catch (e: JsonSyntaxException) {
                     logger.error("Cannot parse JSON")
                     setTaskResult(RcTaskResult.createErrorResult(-1))
                     return

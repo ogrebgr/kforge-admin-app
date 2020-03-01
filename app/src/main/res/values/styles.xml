@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="LargeText" parent="@android:style/TextAppearance.DeviceDefault.Large" />
+
+    <style name="MediumText" parent="@android:style/TextAppearance.DeviceDefault.Medium" />
+
+    <style name="SmallText" parent="@android:style/TextAppearance.DeviceDefault.Small" />
+
 </resources>
