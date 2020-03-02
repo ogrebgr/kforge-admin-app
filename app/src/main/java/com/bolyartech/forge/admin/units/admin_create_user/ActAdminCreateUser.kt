@@ -76,7 +76,7 @@ class ActAdminCreateUser : SessionRctUnitActivity<ResAdminCreateUser>() {
                         etUsername.text.toString(),
                         etPassword.text.toString(),
                         etName.text.toString(),
-                        cbSuperadmin.isChecked
+                        cbSuperAdmin.isChecked
                     )
                 }
                 true
