@@ -17,9 +17,4 @@
         android:title="@string/act__admin_user_manage__mi_superadmin"
         android:visible="true"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/ab_create_new"
-        android:title="@string/act__admin_user_manage__create_new"
-        android:visible="true"
-        app:showAsAction="never" />
 </menu>
