@@ -6,5 +6,6 @@ class TaskIds {
         const val LOGIN_TASK = 2
         const val ADMIN_USERS_LIST = 3
         const val LOAD_ADMIN_USER_TASK = 4
+        const val ADMIN_USER_CREATE_TASK = 5
     }
 }

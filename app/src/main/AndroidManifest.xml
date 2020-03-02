@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".units.admin_user_manage.ActAdminUserManage"></activity>
+        <activity android:name=".units.admin_create_user.ActAdminCreateUser"></activity>
+        <activity android:name=".units.admin_user_manage.ActAdminUserManage" />
         <activity android:name=".units.admin_users.ActAdminUsers" />
         <activity android:name=".units.login.ActLogin" />
         <activity android:name=".units.main.ActMain">

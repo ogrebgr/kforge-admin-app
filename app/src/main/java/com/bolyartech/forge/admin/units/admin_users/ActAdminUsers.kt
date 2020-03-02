@@ -15,6 +15,7 @@ import com.bolyartech.forge.admin.dialogs.DfSessionExpired
 import com.bolyartech.forge.admin.dialogs.hideGenericWaitDialog
 import com.bolyartech.forge.admin.dialogs.showGenericWaitDialog
 import com.bolyartech.forge.admin.dialogs.showSessionExpiredDialog
+import com.bolyartech.forge.admin.units.admin_create_user.ActAdminCreateUser
 import com.bolyartech.forge.admin.units.admin_user_manage.ActAdminUserManage
 import com.bolyartech.forge.android.misc.ActivityResult
 import com.google.gson.Gson
@@ -25,7 +26,9 @@ import javax.inject.Inject
 
 class ActAdminUsers : SessionRctUnitActivity<ResAdminUsers>(), DfSessionExpired.Listener,
     AdminUsersAdapter.ClickListener {
+
     private val ACT_ADMIN_USER_MANAGE = 100
+    private val ACT_CREATE_NEW = 101
 
     @Inject
     internal lateinit var resResAdminUsers: dagger.Lazy<ResAdminUsers>
@@ -99,6 +102,13 @@ class ActAdminUsers : SessionRctUnitActivity<ResAdminUsers>(), DfSessionExpired.
                 res.listAdminUsers()
                 true
             }
+
+            R.id.ab_create_new -> {
+                val intent = Intent(this, ActAdminCreateUser::class.java)
+                startActivityForResult(intent, ACT_CREATE_NEW)
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

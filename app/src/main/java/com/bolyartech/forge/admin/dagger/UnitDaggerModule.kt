@@ -1,5 +1,7 @@
 package com.bolyartech.forge.admin.dagger
 
+import com.bolyartech.forge.admin.units.admin_create_user.ResAdminCreateUser
+import com.bolyartech.forge.admin.units.admin_create_user.ResAdminCreateUserImpl
 import com.bolyartech.forge.admin.units.admin_user_manage.ResAdminUserManage
 import com.bolyartech.forge.admin.units.admin_user_manage.ResAdminUserManageImpl
 import com.bolyartech.forge.admin.units.admin_users.ResAdminUsers
@@ -37,4 +39,7 @@ abstract class UnitDaggerModule {
 
     @Binds
     internal abstract fun provideResAdminUserManage(impl: ResAdminUserManageImpl): ResAdminUserManage
+
+    @Binds
+    internal abstract fun provideResAdminCreateUser(impl: ResAdminCreateUserImpl): ResAdminCreateUser
 }

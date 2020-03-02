@@ -21,7 +21,6 @@ import org.example.kforgepro.modules.admin.AdminResponseCodes
 import javax.inject.Inject
 
 class ActAdminUserManage : SessionRctUnitActivity<ResAdminUserManage>() {
-
     @Inject
     internal lateinit var resLazy: dagger.Lazy<ResAdminUserManage>
 
@@ -84,6 +83,7 @@ class ActAdminUserManage : SessionRctUnitActivity<ResAdminUserManage>() {
                 res.loadUser()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -120,4 +120,6 @@ class ActAdminUserManage : SessionRctUnitActivity<ResAdminUserManage>() {
     override fun handleResidentIdleState() {
         hideGenericWaitDialog(supportFragmentManager)
     }
+
+
 }
