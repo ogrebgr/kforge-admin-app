@@ -1,4 +1,4 @@
-package com.bolyartech.forge.admin.units.login
+package com.bolyartech.forge.admin.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog

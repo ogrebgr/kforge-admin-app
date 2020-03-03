@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager
 import com.bolyartech.forge.admin.R
 import com.bolyartech.forge.admin.base.PerformsLogin
 import com.bolyartech.forge.admin.base.RctUnitActivity
+import com.bolyartech.forge.admin.dialogs.DfCommError
 import com.bolyartech.forge.admin.dialogs.hideGenericWaitDialog
 import com.bolyartech.forge.admin.dialogs.showGenericWaitDialog
 import com.bolyartech.forge.admin.misc.LoginPrefs

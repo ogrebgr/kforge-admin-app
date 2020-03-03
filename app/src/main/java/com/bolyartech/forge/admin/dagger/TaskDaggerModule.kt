@@ -2,8 +2,7 @@ package com.bolyartech.forge.admin.dagger
 
 import com.bolyartech.forge.admin.units.admin_create_user.AdminCreateUserTask
 import com.bolyartech.forge.admin.units.admin_create_user.AdminCreateUserTaskImpl
-import com.bolyartech.forge.admin.units.admin_user_manage.LoadAdminUserTask
-import com.bolyartech.forge.admin.units.admin_user_manage.LoadAdminUserTaskImpl
+import com.bolyartech.forge.admin.units.admin_user_manage.*
 import com.bolyartech.forge.admin.units.admin_users.ListAdminUsersTask
 import com.bolyartech.forge.admin.units.admin_users.ListAdminUsersTaskImpl
 import com.bolyartech.forge.admin.units.login.LoginTask
@@ -26,4 +25,10 @@ abstract class TaskDaggerModule {
 
     @Binds
     internal abstract fun provideAdminCreateUserTask(impl: AdminCreateUserTaskImpl): AdminCreateUserTask
+
+    @Binds
+    internal abstract fun provideStoreSuperAdminTask(impl: StoreSuperAdminTaskImpl): StoreSuperAdminTask
+
+    @Binds
+    internal abstract fun provideStoreAdminUserDisabledTask(impl: StoreAdminUserDisabledTaskImpl): StoreAdminUserDisabledTask
 }

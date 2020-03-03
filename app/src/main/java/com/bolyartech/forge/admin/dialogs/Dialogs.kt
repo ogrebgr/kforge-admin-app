@@ -28,3 +28,11 @@ fun showSessionExpiredDialog(fm: FragmentManager) {
         fm.executePendingTransactions()
     }
 }
+
+fun showCommErrorDialog(fm: FragmentManager) {
+    if (fm.findFragmentByTag(DfCommError.DIALOG_TAG) == null) {
+        val fra = DfCommError()
+        fra.show(fm, DfCommError.DIALOG_TAG)
+        fm.executePendingTransactions()
+    }
+}

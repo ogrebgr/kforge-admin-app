@@ -15,27 +15,31 @@ interface ResAdminUserManage : RctResidentComponent {
     fun getUser(): AdminUserExportedView
     fun getErrorCode(): Int
 
-    fun raiseDisable()
-    fun lowerDisable()
-    fun raiseSuperAdmin()
-    fun lowerSuperAdmin()
+    fun toggleDisable()
+    fun toggleSuperAdmin()
 }
 
 class ResAdminUserManageImpl @Inject constructor(
     taskExecutor: RcTaskExecutor,
-    private val loadUserProvider: Provider<LoadAdminUserTask>
+    private val loadUserProvider: Provider<LoadAdminUserTask>,
+    private val storeSuperAdminTaskProvider: Provider<StoreSuperAdminTask>,
+    private val storeDisabledTaskProvider: Provider<StoreAdminUserDisabledTask>
+
 ) : ResAdminUserManage,
     AbstractRctResidentComponent(taskExecutor) {
 
     private var loadAdminUserTask: LoadAdminUserTask? = null
+    private var storeSuperAdminTask: StoreSuperAdminTask? = null
+    private var storeDisabledTask: StoreAdminUserDisabledTask? = null
+
 
     private var errorCode: Int = 0
 
-    private var user: AdminUserExportedView? = null
+    private lateinit var user: AdminUserExportedView
 
     override fun loadUser() {
         val task = loadUserProvider.get()
-        task.init(user!!.id)
+        task.init(user.id)
         loadAdminUserTask = task
         executeTask(loadAdminUserTask)
     }
@@ -45,27 +49,25 @@ class ResAdminUserManageImpl @Inject constructor(
     }
 
     override fun getUser(): AdminUserExportedView {
-        return user!!
+        return user
     }
 
     override fun getErrorCode(): Int {
         return errorCode
     }
 
-    override fun raiseDisable() {
-        TODO("not implemented")
+    override fun toggleSuperAdmin() {
+        val t = storeSuperAdminTaskProvider.get()
+        t.init(user.id, !user.isSuperUser)
+        storeSuperAdminTask = t
+        executeTask(t)
     }
 
-    override fun lowerDisable() {
-        TODO("not implemented")
-    }
-
-    override fun raiseSuperAdmin() {
-        TODO("not implemented")
-    }
-
-    override fun lowerSuperAdmin() {
-        TODO("not implemented")
+    override fun toggleDisable() {
+        val t = storeDisabledTaskProvider.get()
+        t.init(user.id, !user.isDisabled)
+        storeDisabledTask = t
+        executeTask(t)
     }
 
     override fun onTaskPostExecute(endedTask: RcTaskToExecutor) {
@@ -77,7 +79,22 @@ class ResAdminUserManageImpl @Inject constructor(
                     errorCode = loadAdminUserTask!!.result.errorValue
                 }
             }
+
+            TaskIds.ADMIN_USER_STORE_SUPERADMIN -> {
+                if (endedTask.isSuccess) {
+                    user = AdminUserExportedView(user.id, user.username, user.isDisabled, !user.isSuperUser, user.name)
+                } else {
+                    errorCode = storeSuperAdminTask!!.result.errorValue
+                }
+            }
+
+            TaskIds.ADMIN_USER_STORE_DISABLED -> {
+                if (endedTask.isSuccess) {
+                    user = AdminUserExportedView(user.id, user.username, !user.isDisabled, user.isSuperUser, user.name)
+                } else {
+                    errorCode = storeSuperAdminTask!!.result.errorValue
+                }
+            }
         }
     }
-
 }

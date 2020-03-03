@@ -8,10 +8,7 @@ import androidx.appcompat.widget.Toolbar
 import com.bolyartech.forge.admin.R
 import com.bolyartech.forge.admin.base.SessionRctUnitActivity
 import com.bolyartech.forge.admin.data.AdminUserExportedView
-import com.bolyartech.forge.admin.dialogs.hideGenericWaitDialog
-import com.bolyartech.forge.admin.dialogs.showGenericWaitDialog
-import com.bolyartech.forge.admin.dialogs.showSessionExpiredDialog
-import com.bolyartech.forge.admin.misc.TaskIds
+import com.bolyartech.forge.admin.dialogs.*
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.android.synthetic.main.act__admin_user_manage__content.*
@@ -20,7 +17,7 @@ import kotlinx.android.synthetic.main.rvr__admin_users.tvUsername
 import org.example.kforgepro.modules.admin.AdminResponseCodes
 import javax.inject.Inject
 
-class ActAdminUserManage : SessionRctUnitActivity<ResAdminUserManage>() {
+class ActAdminUserManage : SessionRctUnitActivity<ResAdminUserManage>(), DfSessionExpired.Listener {
     @Inject
     internal lateinit var resLazy: dagger.Lazy<ResAdminUserManage>
 
@@ -84,6 +81,17 @@ class ActAdminUserManage : SessionRctUnitActivity<ResAdminUserManage>() {
                 true
             }
 
+            R.id.ab_superadmin -> {
+                res.toggleSuperAdmin()
+                true
+            }
+
+            R.id.ab_disable -> {
+                res.toggleDisable()
+                true
+            }
+
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -99,16 +107,14 @@ class ActAdminUserManage : SessionRctUnitActivity<ResAdminUserManage>() {
     override fun handleResidentEndedState() {
         hideGenericWaitDialog(supportFragmentManager)
 
-        when (res.currentTask.id) {
-            TaskIds.LOAD_ADMIN_USER_TASK -> {
-                if (res.currentTask.isSuccess) {
-                    showUser(res.getUser())
-                } else {
-                    if (res.getErrorCode() == AdminResponseCodes.NOT_LOGGED_IN.getCode()) {
-                        session.logout()
-                        showSessionExpiredDialog(supportFragmentManager)
-                    }
-                }
+        if (res.currentTask.isSuccess) {
+            showUser(res.getUser())
+        } else {
+            if (res.getErrorCode() == AdminResponseCodes.NOT_LOGGED_IN.getCode()) {
+                session.logout()
+                showSessionExpiredDialog(supportFragmentManager)
+            } else {
+                showCommErrorDialog(supportFragmentManager)
             }
         }
     }
@@ -121,5 +127,7 @@ class ActAdminUserManage : SessionRctUnitActivity<ResAdminUserManage>() {
         hideGenericWaitDialog(supportFragmentManager)
     }
 
-
+    override fun onDfSessionExpiredClosed() {
+        goHome()
+    }
 }
