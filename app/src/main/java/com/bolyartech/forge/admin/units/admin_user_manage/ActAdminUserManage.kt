@@ -1,5 +1,6 @@
 package com.bolyartech.forge.admin.units.admin_user_manage
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,6 +10,7 @@ import com.bolyartech.forge.admin.R
 import com.bolyartech.forge.admin.base.SessionRctUnitActivity
 import com.bolyartech.forge.admin.data.AdminUserExportedView
 import com.bolyartech.forge.admin.dialogs.*
+import com.bolyartech.forge.admin.units.admin_change_password.ActAdminChangePassword
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.android.synthetic.main.act__admin_user_manage__content.*
@@ -91,6 +93,12 @@ class ActAdminUserManage : SessionRctUnitActivity<ResAdminUserManage>(), DfSessi
                 true
             }
 
+            R.id.ab_change_password -> {
+                val intent = Intent(this, ActAdminChangePassword::class.java)
+                intent.putExtra(ActAdminChangePassword.PARAM_USER_ID, res.getUser().id)
+                startActivity(intent)
+                true
+            }
 
             else -> super.onOptionsItemSelected(item)
         }

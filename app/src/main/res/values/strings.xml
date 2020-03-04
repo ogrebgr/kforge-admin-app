@@ -47,5 +47,7 @@
     <string name="act__admin_user_create__et_username_error">Invalid username, must start with letter, min 6 characters</string>
     <string name="act__admin_user_create__et_password_error_short">Password too short must be at least %s characters</string>
     <string name="act__admin_user_create__et_password_error_mismatch">Passwords don\'t match</string>
+    <string name="act__admin_user_manage__mi_change_password">Change password</string>
+    <string name="act__admin_change_password__title">Change password</string>
 
 </resources>

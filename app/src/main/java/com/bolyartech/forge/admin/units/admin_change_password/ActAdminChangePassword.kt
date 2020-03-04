@@ -1,4 +1,4 @@
-package com.bolyartech.forge.admin.units.admin_create_user
+package com.bolyartech.forge.admin.units.admin_change_password
 
 import android.app.Activity
 import android.os.Bundle
@@ -14,28 +14,34 @@ import com.bolyartech.forge.admin.dialogs.showGenericWaitDialog
 import com.bolyartech.forge.admin.dialogs.showSessionExpiredDialog
 import kotlinx.android.synthetic.main.act__admin_create_user__content.*
 import kotlinx.android.synthetic.main.act__login__content.etPassword
-import kotlinx.android.synthetic.main.act__login__content.etUsername
 import org.example.kforgepro.modules.admin.AdminResponseCodes
 import javax.inject.Inject
 
-
-class ActAdminCreateUser : SessionRctUnitActivity<ResAdminCreateUser>() {
+class ActAdminChangePassword : SessionRctUnitActivity<ResAdminChangePassword>() {
 
     @Inject
-    internal lateinit var resLazy: dagger.Lazy<ResAdminCreateUser>
+    internal lateinit var resLazy: dagger.Lazy<ResAdminChangePassword>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         getDependencyInjector().inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.act__admin_create_user)
+        setContentView(R.layout.act__admin_change_password)
 
         val myToolbar: Toolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
-        myToolbar.setTitle(R.string.act__admin_user_create__title)
+        myToolbar.setTitle(R.string.act__admin_change_password__title)
         setSupportActionBar(myToolbar)
+
+
+        val userId = intent.getIntExtra(PARAM_USER_ID, -1)
+        if (userId == -1) {
+            throw IllegalStateException("Missing PARAM_USER_ID")
+        }
+
+        res.init(userId)
     }
 
-    override fun createResidentComponent(): ResAdminCreateUser {
+    override fun createResidentComponent(): ResAdminChangePassword {
         return resLazy.get()
     }
 
@@ -63,7 +69,7 @@ class ActAdminCreateUser : SessionRctUnitActivity<ResAdminCreateUser>() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.act__admin_user_create__menu, menu)
+        inflater.inflate(R.menu.act__admin_change_password__menu, menu)
 
         return true
     }
@@ -72,12 +78,7 @@ class ActAdminCreateUser : SessionRctUnitActivity<ResAdminCreateUser>() {
         return when (item.itemId) {
             R.id.ab_save -> {
                 if (checkForm()) {
-                    res.createUser(
-                        etUsername.text.toString(),
-                        etPassword.text.toString(),
-                        etName.text.toString(),
-                        cbSuperAdmin.isChecked
-                    )
+                    res.changePassword(etPassword.text.toString())
                 }
                 true
             }
@@ -85,11 +86,8 @@ class ActAdminCreateUser : SessionRctUnitActivity<ResAdminCreateUser>() {
         }
     }
 
-    private fun checkForm(): Boolean {
-        if (!AdminUserExportedView.isValidUsername(etUsername.text.toString())) {
-            etUsername.error = getString(R.string.act__admin_user_create__et_username_error)
-        }
 
+    private fun checkForm(): Boolean {
         if (!AdminUserExportedView.isValidPasswordLength(etPassword.text.toString().length)) {
             etPassword.error = getString(
                 R.string.act__admin_user_create__et_password_error_short,
@@ -105,5 +103,10 @@ class ActAdminCreateUser : SessionRctUnitActivity<ResAdminCreateUser>() {
 
 
         return true
+    }
+
+
+    companion object {
+        const val PARAM_USER_ID = "user id"
     }
 }

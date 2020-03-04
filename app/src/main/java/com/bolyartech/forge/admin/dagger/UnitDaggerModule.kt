@@ -1,5 +1,7 @@
 package com.bolyartech.forge.admin.dagger
 
+import com.bolyartech.forge.admin.units.admin_change_password.ResAdminChangePassword
+import com.bolyartech.forge.admin.units.admin_change_password.ResAdminChangePasswordImpl
 import com.bolyartech.forge.admin.units.admin_create_user.ResAdminCreateUser
 import com.bolyartech.forge.admin.units.admin_create_user.ResAdminCreateUserImpl
 import com.bolyartech.forge.admin.units.admin_user_manage.ResAdminUserManage
@@ -42,4 +44,7 @@ abstract class UnitDaggerModule {
 
     @Binds
     internal abstract fun provideResAdminCreateUser(impl: ResAdminCreateUserImpl): ResAdminCreateUser
+
+    @Binds
+    internal abstract fun provideResAdminChangePassword(impl: ResAdminChangePasswordImpl): ResAdminChangePassword
 }

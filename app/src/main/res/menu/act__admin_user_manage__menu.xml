@@ -17,4 +17,9 @@
         android:title="@string/act__admin_user_manage__mi_superadmin"
         android:visible="true"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/ab_change_password"
+        android:title="@string/act__admin_user_manage__mi_change_password"
+        android:visible="true"
+        app:showAsAction="never" />
 </menu>
