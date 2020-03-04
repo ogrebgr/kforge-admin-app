@@ -10,5 +10,6 @@ class TaskIds {
         const val ADMIN_USER_STORE_SUPERADMIN = 6
         const val ADMIN_USER_STORE_DISABLED = 7
         const val ADMIN_CHANGE_PASSWORD = 8
+        const val LOGOUT = 9
     }
 }

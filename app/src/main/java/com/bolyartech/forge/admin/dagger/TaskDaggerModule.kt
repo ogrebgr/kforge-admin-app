@@ -9,6 +9,8 @@ import com.bolyartech.forge.admin.units.admin_users.ListAdminUsersTask
 import com.bolyartech.forge.admin.units.admin_users.ListAdminUsersTaskImpl
 import com.bolyartech.forge.admin.units.login.LoginTask
 import com.bolyartech.forge.admin.units.login.LoginTaskImpl
+import com.bolyartech.forge.admin.units.main.LogoutTask
+import com.bolyartech.forge.admin.units.main.LogoutTaskImpl
 import dagger.Binds
 import dagger.Module
 
@@ -36,4 +38,7 @@ abstract class TaskDaggerModule {
 
     @Binds
     internal abstract fun provideAdminChangePasswordTask(impl: AdminChangePasswordTaskImpl): AdminChangePasswordTask
+
+    @Binds
+    internal abstract fun provideLogoutTask(impl: LogoutTaskImpl): LogoutTask
 }

@@ -49,5 +49,7 @@
     <string name="act__admin_user_create__et_password_error_mismatch">Passwords don\'t match</string>
     <string name="act__admin_user_manage__mi_change_password">Change password</string>
     <string name="act__admin_change_password__title">Change password</string>
+    <string name="act__main__btn_login">Login</string>
+    <string name="act__main__mi_logout">Logout</string>
 
 </resources>

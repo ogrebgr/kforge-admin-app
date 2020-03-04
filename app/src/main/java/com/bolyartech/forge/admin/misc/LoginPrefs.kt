@@ -15,6 +15,8 @@ interface LoginPrefs {
     fun getPassword(): String?
 
     fun areLoginCredentialsAvailable(): Boolean
+
+    fun clearLoginCredential()
 }
 
 
@@ -55,5 +57,12 @@ class LoginPrefsImpl @Inject constructor(@ForApplication ctx: Context) : LoginPr
 
     override fun areLoginCredentialsAvailable(): Boolean {
         return getUsername() != null
+    }
+
+    override fun clearLoginCredential() {
+        val ed = prefs.edit()
+        ed.putString(KEY_USERNAME, null)
+        ed.putString(KEY_PASSWORD, null)
+        ed.apply()
     }
 }

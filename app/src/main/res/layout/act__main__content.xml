@@ -7,12 +7,28 @@
     android:padding="@dimen/default_activity_padding"
     tools:context="com.bolyartech.forge.admin.units.main.ActMain">
 
-
     <Button
-        android:id="@+id/btnAdminUsers"
+        android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/main_menu__admin_users" />
+        android:text="@string/act__main__btn_login" />
 
+    <ScrollView
+        android:id="@+id/vLoggedIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnAdminUsers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/main_menu__admin_users" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

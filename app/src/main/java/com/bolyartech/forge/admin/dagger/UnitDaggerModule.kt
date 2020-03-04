@@ -10,6 +10,8 @@ import com.bolyartech.forge.admin.units.admin_users.ResAdminUsers
 import com.bolyartech.forge.admin.units.admin_users.ResAdminUsersImpl
 import com.bolyartech.forge.admin.units.login.ResLogin
 import com.bolyartech.forge.admin.units.login.ResLoginImpl
+import com.bolyartech.forge.admin.units.main.ResMain
+import com.bolyartech.forge.admin.units.main.ResMainImpl
 import com.bolyartech.forge.android.app_unit.UnitManager
 import com.bolyartech.forge.android.app_unit.UnitManagerImpl
 import com.bolyartech.forge.android.app_unit.rc_task.executor.RcTaskExecutor
@@ -34,6 +36,9 @@ abstract class UnitDaggerModule {
     internal abstract fun provideRunOnUiThreadHelper(impl: RunOnUiThreadHelperDefault): RunOnUiThreadHelper
 
     @Binds
+    internal abstract fun provideResMain(impl: ResMainImpl): ResMain
+
+    @Binds
     internal abstract fun provideResLogin(impl: ResLoginImpl): ResLogin
 
     @Binds
@@ -47,4 +52,6 @@ abstract class UnitDaggerModule {
 
     @Binds
     internal abstract fun provideResAdminChangePassword(impl: ResAdminChangePasswordImpl): ResAdminChangePassword
+
+
 }
