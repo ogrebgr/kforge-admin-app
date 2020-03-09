@@ -41,6 +41,8 @@ class ActMain : RctUnitActivity<ResMain>() {
         val myToolbar: Toolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
         myToolbar.setTitle(R.string.act__main__title)
         setSupportActionBar(myToolbar)
+        myToolbar.setNavigationIcon(R.mipmap.ic_launcher)
+//        myToolbar.setNavigationOnClickListener {  }
 
 
         btnAdminUsers.setOnClickListener {
@@ -120,7 +122,6 @@ class ActMain : RctUnitActivity<ResMain>() {
         hideGenericWaitDialog(supportFragmentManager)
         handleLoginState()
     }
-
 
     override fun handleResidentBusyState() {
         showGenericWaitDialog(supportFragmentManager)

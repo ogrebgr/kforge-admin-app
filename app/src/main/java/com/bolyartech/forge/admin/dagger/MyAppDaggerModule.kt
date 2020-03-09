@@ -34,24 +34,24 @@ class MyAppDaggerModuleProvides(private val ctx: Context) {
 
 
     @Provides
-    fun provideTimeProvider(): TimeProvider {
+    internal fun provideTimeProvider(): TimeProvider {
         return TimeProviderImpl()
     }
 
     @Provides
-    fun provideAppPrefs(): AppPrefs {
+    internal fun provideAppPrefs(): AppPrefs {
         return AppPrefsImpl(ctx)
     }
 
 
     @Provides
     @AppVersion
-    fun provideAppVersion(): String {
+    internal fun provideAppVersion(): String {
         return versionCode
     }
 
     @Provides
-    fun provideScramClientFunctionality(): ScramClientFunctionality {
+    internal fun provideScramClientFunctionality(): ScramClientFunctionality {
         return ScramClientFunctionalityImpl(DIGEST, HMAC)
     }
 }
