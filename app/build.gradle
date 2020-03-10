@@ -33,7 +33,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.bolyartech.forge.android:forge-android:10.1.1'
+    implementation 'com.bolyartech.forge.android:forge-android:11.0.0'
     implementation 'com.bolyartech.scram_sasl:scram_sasl:2.0.1'
 
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
