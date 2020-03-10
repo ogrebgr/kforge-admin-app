@@ -57,11 +57,12 @@ abstract class RctUnitActivity<T> : UnitBaseActivity<T>(),
         delegate.onActivityResult(requestCode, resultCode, data)
     }
 
-    /**
-     * Convenience method which is called when activity is just created. This is the place to start
-     * a task (and not in onCreate() or onStarted() because you may miss task ending)
-     */
     override fun onResumeJustCreated() {
+        // empty
+    }
+
+
+    override fun onResumeNotJustCreated() {
         // empty
     }
 }
