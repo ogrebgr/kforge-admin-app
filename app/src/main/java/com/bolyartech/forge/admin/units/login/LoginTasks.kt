@@ -77,7 +77,7 @@ class LoginTaskImpl @Inject constructor(
         when (val outcome2 = sessionForgeExchangeExecutor.execute(b2.build())) {
             is ForgeExchangeOutcomeOk -> {
                 val rok: RokLogin = try {
-                    gson.fromJson<RokLogin>(outcome2.payload, RokLogin::class.java)
+                    gson.fromJson(outcome2.payload, RokLogin::class.java)
                 } catch (e: JsonSyntaxException) {
                     logger.error("Cannot parse JSON")
                     setTaskResult(RcTaskResult.createErrorResult(-1))

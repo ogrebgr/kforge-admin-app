@@ -8,18 +8,19 @@ import android.view.View
 import androidx.appcompat.widget.Toolbar
 import com.bolyartech.forge.admin.R
 import com.bolyartech.forge.admin.base.RctUnitActivity
-import com.bolyartech.forge.admin.dialogs.hideGenericWaitDialog
-import com.bolyartech.forge.admin.dialogs.showGenericWaitDialog
+import com.bolyartech.forge.admin.dialogs.*
 import com.bolyartech.forge.admin.misc.LoginPrefs
+import com.bolyartech.forge.admin.misc.TaskIds
 import com.bolyartech.forge.admin.units.admin_users.ActAdminUsers
 import com.bolyartech.forge.admin.units.login.ActLogin
 import com.bolyartech.forge.base.session.Session
 import kotlinx.android.synthetic.main.act__main__content.*
+import org.example.kforgepro.modules.admin.AdminResponseCodes
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 
-class ActMain : RctUnitActivity<ResMain>() {
+class ActMain : RctUnitActivity<ResMain>(), DfGenericWait.Listener, DfInvalidLogin.Listener {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     private val ACT_LOGIN = 1
@@ -53,7 +54,7 @@ class ActMain : RctUnitActivity<ResMain>() {
         btnLogin.setOnClickListener {
             val intent = Intent(this, ActLogin::class.java)
             if (loginPrefs.areLoginCredentialsAvailable()) {
-                intent.putExtra(ActLogin.PARAM_AUTOLOGIN, 1)
+                intent.putExtra(ActLogin.PARAM_FILL_CREDENTIALS, 1)
             }
 
             startActivityForResult(intent, ACT_LOGIN)
@@ -84,9 +85,7 @@ class ActMain : RctUnitActivity<ResMain>() {
         super.onResumeJustCreated()
 
         if (loginPrefs.areLoginCredentialsAvailable()) {
-            val intent = Intent(this, ActLogin::class.java)
-            intent.putExtra(ActLogin.PARAM_AUTOLOGIN, 1)
-            startActivityForResult(intent, ACT_LOGIN)
+            res.login()
         }
     }
 
@@ -120,7 +119,17 @@ class ActMain : RctUnitActivity<ResMain>() {
 
     override fun handleResidentEndedState() {
         hideGenericWaitDialog(supportFragmentManager)
-        handleLoginState()
+        if (res.currentTask.isSuccess) {
+            handleLoginState()
+        } else {
+            if (res.currentTask.id == TaskIds.LOGIN_TASK) {
+                if (res.getErrorCore() == AdminResponseCodes.INVALID_LOGIN.getCode()) {
+                    showInvalidLoginDialog(supportFragmentManager)
+                } else {
+                    showCommErrorDialog(supportFragmentManager)
+                }
+            }
+        }
     }
 
     override fun handleResidentBusyState() {
@@ -129,5 +138,15 @@ class ActMain : RctUnitActivity<ResMain>() {
 
     override fun handleResidentIdleState() {
         hideGenericWaitDialog(supportFragmentManager)
+    }
+
+    override fun onGenericWaitDialogCancelled() {
+        res.abort()
+        handleLoginState()
+    }
+
+    override fun onInvalidLoginDialogClosed() {
+        val intent = Intent(this, ActLogin::class.java)
+        startActivityForResult(intent, ACT_LOGIN)
     }
 }

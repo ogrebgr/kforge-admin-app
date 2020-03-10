@@ -36,3 +36,12 @@ fun showCommErrorDialog(fm: FragmentManager) {
         fm.executePendingTransactions()
     }
 }
+
+
+fun showInvalidLoginDialog(fm: FragmentManager) {
+    if (fm.findFragmentByTag(DfInvalidLogin.DIALOG_TAG) == null) {
+        val fra = DfInvalidLogin()
+        fra.show(fm, DfInvalidLogin.DIALOG_TAG)
+        fm.executePendingTransactions()
+    }
+}

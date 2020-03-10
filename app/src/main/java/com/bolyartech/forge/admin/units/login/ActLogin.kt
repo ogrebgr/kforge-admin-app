@@ -4,13 +4,13 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.FragmentManager
 import com.bolyartech.forge.admin.R
 import com.bolyartech.forge.admin.base.PerformsLogin
 import com.bolyartech.forge.admin.base.RctUnitActivity
-import com.bolyartech.forge.admin.dialogs.DfCommError
 import com.bolyartech.forge.admin.dialogs.hideGenericWaitDialog
+import com.bolyartech.forge.admin.dialogs.showCommErrorDialog
 import com.bolyartech.forge.admin.dialogs.showGenericWaitDialog
+import com.bolyartech.forge.admin.dialogs.showInvalidLoginDialog
 import com.bolyartech.forge.admin.misc.LoginPrefs
 import kotlinx.android.synthetic.main.act__login__content.*
 import org.example.kforgepro.modules.admin.AdminResponseCodes
@@ -52,12 +52,18 @@ class ActLogin : PerformsLogin, RctUnitActivity<ResLogin>() {
         super.onResumeJustCreated()
 
         val autologin = intent.getIntExtra(PARAM_AUTOLOGIN, -1)
+        val fill = intent.getIntExtra(PARAM_FILL_CREDENTIALS, -1)
         if (autologin != -1) {
             etUsername.setText(loginPrefs.getUsername())
             etPassword.setText(loginPrefs.getPassword())
             res.login(loginPrefs.getUsername()!!, loginPrefs.getPassword()!!)
         } else {
             topContainer.visibility = View.VISIBLE
+        }
+
+        if (fill != -1) {
+            etUsername.setText(loginPrefs.getUsername())
+            etPassword.setText(loginPrefs.getPassword())
         }
     }
 
@@ -95,21 +101,6 @@ class ActLogin : PerformsLogin, RctUnitActivity<ResLogin>() {
 
     companion object {
         const val PARAM_AUTOLOGIN = "autologin"
-    }
-
-    private fun showInvalidLoginDialog(fm: FragmentManager) {
-        if (fm.findFragmentByTag(DfInvalidLogin.DIALOG_TAG) == null) {
-            val fra = DfInvalidLogin()
-            fra.show(fm, DfInvalidLogin.DIALOG_TAG)
-            fm.executePendingTransactions()
-        }
-    }
-
-    private fun showCommErrorDialog(fm: FragmentManager) {
-        if (fm.findFragmentByTag(DfCommError.DIALOG_TAG) == null) {
-            val fra = DfCommError()
-            fra.show(fm, DfCommError.DIALOG_TAG)
-            fm.executePendingTransactions()
-        }
+        const val PARAM_FILL_CREDENTIALS = "fill"
     }
 }
