@@ -6,6 +6,8 @@ import com.bolyartech.forge.admin.base.AppPrefs
 import com.bolyartech.forge.admin.base.AppPrefsImpl
 import com.bolyartech.forge.admin.misc.LoginPrefs
 import com.bolyartech.forge.admin.misc.LoginPrefsImpl
+import com.bolyartech.forge.admin.misc.UserInfoHolder
+import com.bolyartech.forge.admin.misc.UserInfoHolderImpl
 import com.bolyartech.forge.base.misc.TimeProvider
 import com.bolyartech.forge.base.misc.TimeProviderImpl
 import com.bolyartech.scram_sasl.client.ScramClientFunctionality
@@ -13,6 +15,7 @@ import com.bolyartech.scram_sasl.client.ScramClientFunctionalityImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 
 @Module
@@ -62,4 +65,7 @@ abstract class MyAppDaggerModuleBinds {
     @Binds
     internal abstract fun provideLoginPrefs(impl: LoginPrefsImpl): LoginPrefs
 
+    @Binds
+    @Singleton
+    internal abstract fun bindsUserInfoHolder(impl: UserInfoHolderImpl): UserInfoHolder
 }

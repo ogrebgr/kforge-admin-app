@@ -10,6 +10,8 @@ import com.bolyartech.forge.admin.R
 import com.bolyartech.forge.admin.base.SessionRctUnitActivity
 import com.bolyartech.forge.admin.data.AdminUserExportedView
 import com.bolyartech.forge.admin.dialogs.*
+import com.bolyartech.forge.admin.misc.LoginPrefs
+import com.bolyartech.forge.admin.misc.UserInfoHolder
 import com.bolyartech.forge.admin.units.admin_change_password.ActAdminChangePassword
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -22,6 +24,12 @@ import javax.inject.Inject
 class ActAdminUserManage : SessionRctUnitActivity<ResAdminUserManage>(), DfSessionExpired.Listener {
     @Inject
     internal lateinit var resLazy: dagger.Lazy<ResAdminUserManage>
+
+    @Inject
+    internal lateinit var userInfoHolder: UserInfoHolder
+
+    @Inject
+    internal lateinit var loginPrefs: LoginPrefs
 
     private val gson = Gson()
 
@@ -72,6 +80,19 @@ class ActAdminUserManage : SessionRctUnitActivity<ResAdminUserManage>(), DfSessi
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.act__admin_user_manage__menu, menu)
+
+        if (!userInfoHolder.isSuperAdmin()) {
+            val miDisable = menu!!.findItem(R.id.ab_disable)
+            miDisable.isVisible = false
+
+            val miSuperAdmin = menu.findItem(R.id.ab_superadmin)
+            miSuperAdmin.isVisible = false
+
+            if (res.getUser().username != loginPrefs.getUsername()) {
+                val miChPwd = menu.findItem(R.id.ab_change_password)
+                miChPwd.isVisible = false
+            }
+        }
 
         return true
     }
@@ -139,3 +160,4 @@ class ActAdminUserManage : SessionRctUnitActivity<ResAdminUserManage>(), DfSessi
         goHome()
     }
 }
+//

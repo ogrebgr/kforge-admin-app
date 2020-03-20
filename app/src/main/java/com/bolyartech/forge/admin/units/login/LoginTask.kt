@@ -2,6 +2,7 @@ package com.bolyartech.forge.admin.units.login
 
 import com.bolyartech.forge.admin.misc.LoginPrefs
 import com.bolyartech.forge.admin.misc.TaskIds
+import com.bolyartech.forge.admin.misc.UserInfoHolder
 import com.bolyartech.forge.base.exchange.ForgeExchangeOutcomeError
 import com.bolyartech.forge.base.exchange.ForgeExchangeOutcomeErrorCode
 import com.bolyartech.forge.base.exchange.ForgeExchangeOutcomeOk
@@ -29,7 +30,8 @@ class LoginTaskImpl @Inject constructor(
     private val sessionForgeExchangeExecutor: SessionForgeExchangeExecutor,
     private val scramClientFunctionality: ScramClientFunctionality,
     private val loginPrefs: LoginPrefs,
-    private val session: Session
+    private val session: Session,
+    private val userInfoHolder: UserInfoHolder
 ) :
     LoginTask, AbstractRcTask<RcTaskResult<String, Int>>(TaskIds.LOGIN_TASK) {
 
@@ -85,6 +87,7 @@ class LoginTaskImpl @Inject constructor(
                 }
 
                 session.startSession(rok.sessionTtl)
+                userInfoHolder.setSuperAdmin(rok.isSuperAdmin)
                 loginPrefs.storeLoginCredentials(username, password)
                 setTaskResult(RcTaskResult.createSuccessResult(null))
             }
@@ -96,7 +99,8 @@ class LoginTaskImpl @Inject constructor(
     data class RokLogin(
         @SerializedName("session_ttl") val sessionTtl: Int,
         @SerializedName("session_info") val sessionInfo: SessionInfoAdmin,
-        @SerializedName("final_message") val finalMessage: String
+        @SerializedName("final_message") val finalMessage: String,
+        @SerializedName("is_super_admin") val isSuperAdmin: Boolean
     )
 }
 

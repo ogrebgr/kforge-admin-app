@@ -48,6 +48,8 @@ abstract class RctUnitActivity<T> : UnitBaseActivity<T>(),
         if (isActivityJustCreated) {
             isActivityJustCreated = false
             onResumeJustCreated()
+        } else {
+            onResumeNotJustCreated()
         }
     }
 
